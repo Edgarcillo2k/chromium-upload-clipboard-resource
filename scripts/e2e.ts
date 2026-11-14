@@ -224,7 +224,9 @@ test('plain: the paste does not leak to page paste handlers', async (_c, page) =
   await page.goto(`${BASE}/plain.html`);
   await page.evaluate(() => {
     (window as unknown as { pageSawPaste: boolean }).pageSawPaste = false;
-    document.addEventListener('paste', () => ((window as unknown as { pageSawPaste: boolean }).pageSawPaste = true));
+    const saw = () => ((window as unknown as { pageSawPaste: boolean }).pageSawPaste = true);
+    window.addEventListener('paste', saw, true); // even an early window capture listener
+    document.addEventListener('paste', saw);
   });
   await copyImage(page);
   await page.click('#any');

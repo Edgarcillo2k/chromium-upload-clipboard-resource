@@ -12,8 +12,7 @@
     "test:e2e": "node scripts/e2e.ts",
     "icons": "node scripts/icons.ts",
     "test": "pnpm build && pnpm test:e2e",
-    "screenshots": "node scripts/screenshot.ts",
-    "zip": "pnpm build && cd dist && zip -qr ../paste-to-upload.zip ."
+    "screenshots": "node scripts/screenshot.ts"
   },
   "packageManager": "pnpm@12.15.0",
   "devDependencies": {

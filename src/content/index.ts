@@ -65,7 +65,6 @@ function finish(type: 'browse' | 'cancel', restoreFocus = true): void {
   current = null;
   generation++;
   popover.close(restoreFocus && type === 'cancel');
-  detachListeners();
   post({ type, id });
 }
 
@@ -75,7 +74,6 @@ function insert(files: File[]): void {
   current = null;
   generation++;
   popover.close(true);
-  detachListeners();
   post({ type: 'insert', id, files });
 }
 
@@ -166,7 +164,7 @@ async function preview(gen: number): Promise<void> {
 // ---- Popover lifetime --------------------------------------------------------------
 
 function onKeyDown(e: KeyboardEvent): void {
-  if (e.key === 'Escape') {
+  if (current && e.key === 'Escape') {
     e.preventDefault();
     e.stopImmediatePropagation();
     finish('cancel');
@@ -174,20 +172,14 @@ function onKeyDown(e: KeyboardEvent): void {
 }
 
 function onPointerDown(e: PointerEvent): void {
-  if (!popover.contains(e)) finish('cancel', false);
+  if (current && !popover.contains(e)) finish('cancel', false);
 }
 
-function attachListeners(): void {
-  window.addEventListener('paste', onPaste, true);
-  window.addEventListener('keydown', onKeyDown, true);
-  window.addEventListener('pointerdown', onPointerDown, true);
-}
-
-function detachListeners(): void {
-  window.removeEventListener('paste', onPaste, true);
-  window.removeEventListener('keydown', onKeyDown, true);
-  window.removeEventListener('pointerdown', onPointerDown, true);
-}
+// Registered once at document_start, before any page script, so that
+// stopImmediatePropagation() really hides our paste/Esc from the page.
+window.addEventListener('paste', onPaste, true);
+window.addEventListener('keydown', onKeyDown, true);
+window.addEventListener('pointerdown', onPointerDown, true);
 
 function open(req: Request): void {
   if (!enabledHere) {
@@ -205,7 +197,6 @@ function open(req: Request): void {
     multiple: req.multiple,
     bypassHint: BYPASS_LABEL[settings.bypassKey],
   });
-  attachListeners();
   void preview(gen);
 }
 
@@ -224,8 +215,7 @@ window.addEventListener('message', (e) => {
         current = null;
         generation++;
         popover.close(false);
-        detachListeners();
-      }
+            }
       break;
   }
 });
