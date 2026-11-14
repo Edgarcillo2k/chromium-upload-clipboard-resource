@@ -1,0 +1,23 @@
+{
+  "name": "paste-to-upload",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Chromium/Brave extension: paste from the clipboard into any file upload.",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm typecheck && node scripts/build.ts",
+    "dev": "node scripts/build.ts --watch",
+    "typecheck": "tsc --noEmit",
+    "serve:test": "node scripts/serve.ts",
+    "test:e2e": "node scripts/e2e.ts",
+    "icons": "node scripts/icons.ts"
+  },
+  "packageManager": "pnpm@12.15.0",
+  "devDependencies": {
+    "@types/chrome": "^0.3.7",
+    "@types/node": "^26.6.6",
+    "playwright-core": "^1.65.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
+  }
+}

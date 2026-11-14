@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Paste to Upload settings</title>
+    <link rel="icon" href="icons/icon-32.png" />
+    <link rel="stylesheet" href="./options.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <img src="icons/icon-48.png" alt="" width="40" height="40" />
+        <div>
+          <h1>Paste to Upload</h1>
+          <p>When a site opens a file picker, choose <em>Paste from clipboard</em> or <em>Browse files…</em>.</p>
+        </div>
+      </header>
+
+      <form id="form">
+        <section>
+          <label class="switch">
+            <input type="checkbox" name="enabled" />
+            <span>Enabled</span>
+          </label>
+        </section>
+
+        <section>
+          <h2>Sites</h2>
+          <fieldset>
+            <label><input type="radio" name="mode" value="denylist" /> Run on every site <strong>except</strong> the ones listed</label>
+            <label><input type="radio" name="mode" value="allowlist" /> Run <strong>only</strong> on the sites listed</label>
+          </fieldset>
+          <textarea name="sites" rows="6" spellcheck="false" placeholder="example.com&#10;drive.google.com"></textarea>
+          <p class="hint">One hostname per line. An entry also covers its subdomains (<code>google.com</code> matches <code>drive.google.com</code>). Lines starting with <code>#</code> are ignored.</p>
+        </section>
+
+        <section>
+          <h2>Skip the popover</h2>
+          <label>
+            Hold
+            <select name="bypassKey">
+              <option value="shift">Shift</option>
+              <option value="alt">Alt</option>
+              <option value="ctrl">Ctrl</option>
+              <option value="none">(nothing, always show the popover)</option>
+            </select>
+            while clicking an upload button to open the normal file picker directly.
+          </label>
+        </section>
+
+        <section>
+          <h2>Clipboard</h2>
+          <label class="switch">
+            <input type="checkbox" name="pasteText" />
+            <span>Turn copied text into a <code>.txt</code> file</span>
+          </label>
+        </section>
+
+        <p id="saved" role="status" aria-live="polite"></p>
+      </form>
+    </main>
+    <script type="module" src="./options.ts"></script>
+  </body>
+</html>
