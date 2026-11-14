@@ -1,8 +1,11 @@
 /* Lives in a closed shadow root: page CSS can't reach in, and we don't leak out. */
 :host {
-  all: initial !important;
+  /* Not !important: important declarations inside a shadow tree beat the
+     inline `left/top !important` that popover.ts sets, and `all` covers them. */
+  all: initial;
   position: fixed !important;
-  inset: auto !important;
+  right: auto !important;
+  bottom: auto !important;
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;

@@ -1,0 +1,6 @@
+body { font: 15px/1.5 system-ui, sans-serif; max-width: 760px; margin: 24px auto; padding: 0 16px; }
+.row { margin: 14px 0; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
+.zone { padding: 28px; border: 2px dashed #888; border-radius: 10px; text-align: center; cursor: pointer; user-select: none; }
+.zone:hover { background: #8881; }
+#log { font: 13px ui-monospace, monospace; }
+code { background: #8882; padding: 1px 4px; border-radius: 4px; }

@@ -1,0 +1,27 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Plain file inputs</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="icon" href="data:," />
+<script src="shared.js"></script>
+<h1>Plain <code>&lt;input type="file"&gt;</code></h1>
+<p>Copy a screenshot, then click a "Choose file" button. Shift+click opens the normal picker.</p>
+
+<div class="row"><label>Any file: <input id="any" type="file" /></label></div>
+<div class="row"><label>Images only (<code>accept="image/*"</code>): <input id="images" type="file" accept="image/*" /></label></div>
+<div class="row"><label>Multiple: <input id="multi" type="file" multiple /></label></div>
+<div class="row"><label>PDF only (<code>accept=".pdf"</code>): <input id="pdf" type="file" accept=".pdf" /></label></div>
+<div class="row"><label>JPEG only (<code>accept="image/jpeg"</code>): <input id="jpeg" type="file" accept="image/jpeg" /></label></div>
+<div class="row">
+  <input id="labelled" type="file" style="display: none" />
+  <label for="labelled" class="zone" id="labelzone">A &lt;label for&gt; pointing at a display:none input</label>
+</div>
+<form class="row" id="form" method="post" action="#">
+  <label>In a form: <input id="formfile" name="file" type="file" /></label>
+</form>
+
+<h2>Change events</h2>
+<ol id="log"></ol>
+<script>
+  for (const id of ['any', 'images', 'multi', 'pdf', 'jpeg', 'labelled', 'formfile']) track(document.getElementById(id), id);
+</script>

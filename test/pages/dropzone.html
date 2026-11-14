@@ -1,0 +1,83 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Dropzone / programmatic inputs</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="icon" href="data:," />
+<script src="shared.js"></script>
+<h1>Hidden inputs opened from script</h1>
+<p>Like React Dropzone, Gmail, Google Drive: the real input is hidden and the page calls <code>.click()</code> on it.</p>
+
+<div class="row">
+  <div class="zone" id="zone">Drop files here, or click to upload (hidden input, <code>input.click()</code>)</div>
+  <input id="hidden" type="file" accept="image/*" multiple hidden />
+</div>
+
+<div class="row">
+  <div class="zone" id="detachedzone">Click: a brand-new detached input, never added to the DOM</div>
+</div>
+
+<div class="row">
+  <button id="pickerbtn" type="button">Upload via <code>showPicker()</code></button>
+  <input id="pickerinput" type="file" style="position: absolute; left: -9999px" />
+</div>
+
+<div class="row">
+  <div class="zone" id="reactish">"React-style": opacity 0 input stretched over the zone</div>
+</div>
+
+<div class="row">
+  <shadow-uploader id="shadowhost"></shadow-uploader>
+</div>
+
+<div class="row">
+  <button id="opendialog" type="button">Open a modal &lt;dialog&gt; with an upload button</button>
+  <dialog id="dialog">
+    <p>Modal dialog (top layer)</p>
+    <div class="zone" id="dialogzone">Click to upload</div>
+    <input id="dialoginput" type="file" hidden />
+    <button type="button" onclick="dialog.close()">Close</button>
+  </dialog>
+</div>
+
+<h2>Change events</h2>
+<ol id="log"></ol>
+<script>
+  const hidden = document.getElementById('hidden');
+  track(hidden, 'hidden');
+  document.getElementById('zone').addEventListener('click', () => hidden.click());
+
+  document.getElementById('detachedzone').addEventListener('click', () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    track(input, 'detached');
+    input.click();
+  });
+
+  const pickerInput = document.getElementById('pickerinput');
+  track(pickerInput, 'showPicker');
+  document.getElementById('pickerbtn').addEventListener('click', () => pickerInput.showPicker());
+
+  // react-dropzone style: the input sits on top of the zone, invisible.
+  const zone = document.getElementById('reactish');
+  zone.style.position = 'relative';
+  const overlay = document.createElement('input');
+  overlay.type = 'file';
+  overlay.id = 'reactinput';
+  overlay.style.cssText = 'position:absolute;inset:0;opacity:0;cursor:pointer;width:100%';
+  zone.append(overlay);
+  track(overlay, 'react');
+
+  customElements.define('shadow-uploader', class extends HTMLElement {
+    connectedCallback() {
+      const root = this.attachShadow({ mode: 'open' });
+      root.innerHTML = '<label>Inside open shadow DOM: <input type="file" id="shadowinput"></label>';
+      track(root.querySelector('input'), 'shadow');
+    }
+  });
+
+  const dialog = document.getElementById('dialog');
+  const dialogInput = document.getElementById('dialoginput');
+  track(dialogInput, 'dialog');
+  document.getElementById('opendialog').addEventListener('click', () => dialog.showModal());
+  document.getElementById('dialogzone').addEventListener('click', () => dialogInput.click());
+</script>

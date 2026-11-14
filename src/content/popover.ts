@@ -95,8 +95,12 @@ export class Popover {
     this.foot.textContent = hints;
     this.foot.hidden = !hints;
 
-    // Attach to <html>, not <body>: SPAs sometimes replace <body>.
-    if (!this.host.isConnected) document.documentElement.appendChild(this.host);
+    // A modal <dialog> makes everything outside it inert (unclickable), even our
+    // top-layer popover, so live inside the topmost modal when there is one.
+    // Otherwise attach to <html>, not <body>: SPAs sometimes replace <body>.
+    const modals = document.querySelectorAll('dialog:modal');
+    const parent = modals[modals.length - 1] ?? document.documentElement;
+    if (this.host.parentNode !== parent) parent.appendChild(this.host);
     // Top layer, so we sit above modal <dialog>s and other popovers.
     this.host.setAttribute('popover', 'manual');
     try {

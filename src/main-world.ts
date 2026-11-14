@@ -228,6 +228,12 @@ declare global {
       case 'ack':
         if (pending?.id === msg.id) clearTimeout(pending.ackTimer);
         return;
+      case 'insert':
+      case 'browse':
+      case 'cancel':
+        break;
+      default:
+        return; // our own outgoing messages echo back to us too
     }
     if (!pending || pending.id !== msg.id) return;
     const { input, append } = pending;
