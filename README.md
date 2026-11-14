@@ -14,6 +14,10 @@ It works with plain `<input type="file">` fields and with the hidden inputs that
 
 ## Install (Brave)
 
+**Not a developer?** Download the zip from the [latest release](https://github.com/Edgarcillo2k/chromium-upload-clipboard-resource/releases/latest) and follow [INSTALL.md](INSTALL.md). No tools needed.
+
+### From source
+
 You need [Node.js](https://nodejs.org/) 22.18+ (24 recommended) and [pnpm](https://pnpm.io/installation).
 
 ```sh
@@ -107,6 +111,7 @@ pnpm dev          # rebuild dist/ on every change (then ↻ the extension)
 pnpm build        # typecheck + production build into dist/
 pnpm typecheck
 pnpm serve:test   # serve the manual test pages at http://127.0.0.1:5179/
+pnpm package      # build + release/paste-to-upload-v<version>.zip (manifest.json at the zip root)
 ```
 
 Project layout:
@@ -136,4 +141,11 @@ pnpm exec playwright-core install chromium   # once
 pnpm test                                    # build + e2e
 CHROME_PATH=/usr/bin/brave pnpm test:e2e     # against another Chromium-based browser
 ONLY=dropzone HEADED=1 pnpm test:e2e         # a subset, with a visible window
+EXT_DIR=path/to/unzipped pnpm test:e2e       # test an unzipped release instead of dist/
 ```
+
+### Releasing
+
+1. Bump `version` in `package.json` (the manifest takes it from there).
+2. `pnpm test && pnpm package`
+3. Commit, then `gh release create v<version> release/paste-to-upload-v<version>.zip --title "v<version>" --notes "…"`

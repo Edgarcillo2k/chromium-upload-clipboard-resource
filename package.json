@@ -12,12 +12,14 @@
     "test:e2e": "node scripts/e2e.ts",
     "icons": "node scripts/icons.ts",
     "test": "pnpm build && pnpm test:e2e",
-    "screenshots": "node scripts/screenshot.ts"
+    "screenshots": "node scripts/screenshot.ts",
+    "package": "pnpm build && node scripts/package.ts"
   },
   "packageManager": "pnpm@12.15.0",
   "devDependencies": {
     "@types/chrome": "^0.3.7",
     "@types/node": "^26.6.6",
+    "fflate": "^0.8.3",
     "playwright-core": "^1.65.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.8"

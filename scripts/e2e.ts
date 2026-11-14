@@ -17,7 +17,7 @@ import assert from 'node:assert/strict';
 import { serve } from './serve.ts';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const extDir = path.join(root, 'dist');
+const extDir = path.resolve(process.env.EXT_DIR ?? path.join(root, 'dist')); // EXT_DIR: test an unzipped release
 const PORT = 5180;
 const BASE = `http://127.0.0.1:${PORT}`;
 const HOST_SEL = 'paste-to-upload-popover';
